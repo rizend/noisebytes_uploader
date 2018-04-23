@@ -6,8 +6,8 @@ import httplib2
 import os
 import random
 import time
+import pickle
 
-import google.oauth2.credentials
 import google_auth_oauthlib.flow
 from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
@@ -52,12 +52,35 @@ API_VERSION = 'v3'
 
 VALID_PRIVACY_STATUSES = ('public', 'private', 'unlisted')
 
+CREDS_FILE='creds.priv'
 
-# Authorize the request and store authorization credentials.
-def get_authenticated_service():
+def saveCreds(credentials):
+  f = open(CREDS_FILE, "wb")
+  pickle.dump(credentials, f)
+  f.close()
+def loadCreds():
+  f = open(CREDS_FILE, "r")
+  credentials = pickle.load(f)
+  f.close()
+  return credentials
+
+def run_flow():
   flow = InstalledAppFlow.from_client_secrets_file(CLIENT_SECRETS_FILE, SCOPES)
   flow.authorization_url(access_type='offline',include_granted_scopes='true')
   credentials = flow.run_console()
+  saveCreds(credentials)
+  return credentials
+
+# Authorize the request and store authorization credentials.
+def get_authenticated_service():
+  credentials = None
+  try:
+    credentials = loadCreds()
+  except IOError, e:
+    print "No auth file found"
+    credentials = None
+  if credentials == None:
+    credentials = run_flow()
   return build(API_SERVICE_NAME, API_VERSION, credentials = credentials)
 
 def initialize_upload(youtube, options):
