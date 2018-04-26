@@ -51,7 +51,7 @@ def initialize_upload(youtube, title, filename):
         media_body=MediaFileUpload(filename, chunksize=-1, resumable=True)
     )
 
-    resumable_upload(insert_request)
+    return resumable_upload(insert_request)
 
 def resumable_upload(request):
     response = None
@@ -67,8 +67,8 @@ def resumable_upload(request):
                     handle = open('./uploads/queue.txt', 'a')
                     handle.write(response['id'] + '\n')
                     handle.close()
-                else:
-                    exit('The upload failed with an unexpected response: %s' % response)
+                    return response['id']
+                exit('The upload failed with an unexpected response: %s' % response)
         except HttpError, err:
             if err.resp.status in RETRIABLE_STATUS_CODES:
                 error = 'A retriable HTTP error %d occurred:\n%s' % \
@@ -93,7 +93,7 @@ def upload_video(title, filename):
     youtube = get_authenticated_service()
 
     try:
-        initialize_upload(youtube, title, filename)
+        return initialize_upload(youtube, title, filename)
     except HttpError, err:
         print 'An HTTP error %d occurred:\n%s' % (err.resp.status, err.content)
 

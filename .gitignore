@@ -5,3 +5,5 @@ creds.priv
 processor_assets/
 info.txt
 uploads/
+secrets.py
+*.pyc
