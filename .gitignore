@@ -1,3 +1,7 @@
 venv/
 client_secrets.json
 creds.priv
+*/.DS_Store
+processor_assets/
+info.txt
+uploads/
