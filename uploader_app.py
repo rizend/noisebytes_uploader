@@ -89,7 +89,7 @@ def upload_file_handler():
                 os.remove(processed_file)
             threading.Thread(target=upload_to_youtube_thread).start()
 
-            return redirect(url_for('upload_file'))
+            return redirect(url_for('upload_file_handler'))
     return '''
     <!doctype html>
     <title>Upload a Noisebyte!</title>
