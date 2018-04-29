@@ -131,8 +131,5 @@ def approve_video(video_id):
         youtube.playlistItems().insert(body=playlist_properties, part='snippet').execute()
 
         return "Approved"
-    # video is not in queue. does it exist or not???
-    result = youtube.videos().list(id=video_id, part='snippet').execute()
-    if len(result.items()) == 0:
-        return "NoVideo"
+    
     return "AlreadyApproved"
