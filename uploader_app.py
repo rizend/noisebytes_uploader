@@ -15,6 +15,9 @@ ALLOWED_EXTENSIONS = set(['mov', 'mp4', 'avi', 'mkv', 'wmv', 'mpeg4', 'mpg'])
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
+def youtube_video_url(id):
+  return 'https://www.youtube.com/watch?v=' + id
+
 def log_to_slack(msg):
     payload = {
         "channel": "#noisebytes",
@@ -28,14 +31,12 @@ def log_to_slack(msg):
 def slack_command_handler():
     if request.form['token'] != SLACK_TOKEN:
         return ':('
-    txt = request.form['text']
+    video_id = request.form['text']
     user = request.form['user_name']
-    ret = youtube_uploader.approve_video(txt)
+    ret = youtube_uploader.approve_video(video_id)
     if ret == "Approved":
-        log_to_slack(user + ' approved video id ' + txt)
+        log_to_slack(user + ' approved video ' + youtube_video_url(video_id))
         return "Video successfully approved"
-    if ret == "NoVideo":
-        return "No video found with given id"
     if ret == "AlreadyApproved":
         return "That video has already been approved :)"
     return "Unknown return value, please contact @augur and/or @rizend"
@@ -88,7 +89,7 @@ def upload_file_handler():
                 video_id = youtube_uploader.upload_video(title_of_processed_video(title, author),
                                                          processed_file)
                 if video_id:
-                    log_to_slack("Video " + video_id + " ready for moderation")
+                    log_to_slack("Video " + youtube_video_url(video_id) + " ready for moderation")
                 else:
                     log_to_slack("An error was encountered while uploading a video")
                 os.remove(upload_file)
