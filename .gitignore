@@ -7,3 +7,4 @@ info.txt
 uploads/
 secrets.py
 *.pyc
+.DS_Store
