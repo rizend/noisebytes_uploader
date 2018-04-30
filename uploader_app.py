@@ -39,7 +39,7 @@ def slack_command_handler():
         return "Video successfully approved"
     if ret == "AlreadyApproved":
         return "That video has already been approved :)"
-    return "Unknown return value, please contact @augur and/or @rizend"
+    return "Unknown return value, please contact @beka and/or @rizend"
 
 def title_of_processed_video(title, author):
     return "Noisebytes - " + title + " by " + author
