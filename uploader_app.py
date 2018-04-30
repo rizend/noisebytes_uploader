@@ -4,7 +4,7 @@ import binascii
 from subprocess import call
 import threading
 from secrets import SLACK_TOKEN, SLACK_WEBHOOK_URL
-from flask import Flask, request, redirect, url_for, flash
+from flask import Flask, request, redirect, url_for, flash, render_template
 import requests
 import youtube_uploader
 
@@ -65,7 +65,14 @@ def upload_file_handler():
             flash('No selected file')
             print "no selected file"
             return redirect(request.url)
-        if posted_file and allowed_file(posted_file.filename):
+        
+        if not allowed_file(posted_file.filename):
+            flash('Invalid file type. Try these: ' + ' '.join(x for x in ALLOWED_EXTENSIONS))
+            print "Invalid file type"
+            return redirect(request.url)
+        
+        if posted_file:
+            flash('Your file is uploading.')
             title = request.form['title']
             author = request.form['author']
             temp_name = random_name()
@@ -90,17 +97,10 @@ def upload_file_handler():
             threading.Thread(target=upload_to_youtube_thread).start()
 
             return redirect(url_for('upload_file_handler'))
-    return '''
-    <!doctype html>
-    <title>Upload a Noisebyte!</title>
-    <h1>Upload a Noisebyte!</h1>
-    <form method=post enctype=multipart/form-data>
-        <p>Title: <input name=title></p>
-        <p>Author: <input name=author></p>
-        <p><input type=file name=file>
-              <input type=submit value=Upload>
-    </form>
-    '''
+    
+    return render_template('uploader_app.html')
 
 if __name__ == '__main__':
+    app.secret_key = 'super secret key'
+    app.config['SESSION_TYPE'] = 'filesystem'
     app.run(host="127.0.0.1", port=int("3114"), debug=False)
