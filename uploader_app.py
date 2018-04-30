@@ -59,11 +59,10 @@ def upload_file_handler():
             print "No file part"
             return redirect(request.url)
         posted_file = request.files['file']
-        # if user does not select file, browser also
-        # submit a empty part without filename
+        
         if posted_file.filename == '':
             flash('No selected file')
-            print "no selected file"
+            print "No selected file"
             return redirect(request.url)
         
         if not allowed_file(posted_file.filename):
