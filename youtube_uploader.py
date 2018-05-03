@@ -28,6 +28,7 @@ API_SERVICE_NAME = 'youtube'
 API_VERSION = 'v3'
 VALID_PRIVACY_STATUSES = ('public', 'private', 'unlisted')
 CREDS_FILE = 'creds.priv'
+NOISEBYTES_PLAYLIST_ID = 'PLKeFAK1EcPdp-lnptPyCe_pdvU2T4JR6H'
 
 def load_credentials():
     handle = open(CREDS_FILE, "r")
@@ -120,7 +121,7 @@ def approve_video(video_id):
 
         playlist_properties = dict(
             snippet=dict(
-                playlistId='PLpphGRHXhSFiiH9MD5GyVArhCnO_Dpt5A',
+                playlistId='NOISEBYTES_PLAYLIST_ID',
                 resourceId=dict(
                     kind='youtube#video',
                     videoId=video_id
