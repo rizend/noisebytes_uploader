@@ -8,3 +8,4 @@ uploads/
 secrets.py
 *.pyc
 .DS_Store
+temp/

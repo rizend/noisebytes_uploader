@@ -4,13 +4,14 @@ import binascii
 from subprocess import call
 import threading
 from secrets import SLACK_TOKEN, SLACK_WEBHOOK_URL
-from flask import Flask, request, redirect, url_for, flash, render_template
+from flask import Flask, request, redirect, flash, render_template
 import requests
 import youtube_uploader
 
 UPLOAD_FOLDER = './uploads'
 TEMP_FOLDER = './temp'
 ALLOWED_EXTENSIONS = set(['mov', 'mp4', 'avi', 'mkv', 'wmv', 'mpeg4', 'mpg'])
+BASE_ADDR='/noisebytes/'
 
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
@@ -58,18 +59,18 @@ def upload_file_handler():
         if 'file' not in request.files:
             flash('No file part')
             print "No file part"
-            return redirect(request.url)
+            return redirect(BASE_ADDR)
         posted_file = request.files['file']
         
         if posted_file.filename == '':
             flash('No selected file')
             print "No selected file"
-            return redirect(request.url)
+            return redirect(BASE_ADDR)
         
         if not allowed_file(posted_file.filename):
             flash('Invalid file type. Try these: ' + ' '.join(x for x in ALLOWED_EXTENSIONS))
             print "Invalid file type"
-            return redirect(request.url)
+            return redirect(BASE_ADDR)
         
         if posted_file:
             flash('Your file is uploading.')
@@ -96,8 +97,8 @@ def upload_file_handler():
                 os.remove(processed_file)
             threading.Thread(target=upload_to_youtube_thread).start()
 
-            return redirect(url_for('upload_file_handler'))
-    
+            return redirect(BASE_ADDR)
+
     return render_template('uploader_app.html')
 
 if __name__ == '__main__':
