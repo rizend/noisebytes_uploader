@@ -13,8 +13,15 @@ outrovideo=${outrovideos[$[$RANDOM % ${#outrovideos[@]}]]}
 echo Outro Video: $outrovideo
 
 outrosongs=(./processor_assets/Outro\ Songs/*)
-outrosong=${outrosongs[$[$RANDOM % ${#outrosongs[@]}]]}
-echo Outro Song: $outrosong
+outrosongdir=${outrosongs[$[$RANDOM % ${#outrosongs[@]}]]}
+outrosong="${outrosongdir}/song.wav"
+outrosongtitle="${outrosongdir}/title.txt"
+outrosongartist="${outrosongdir}/artist.txt"
+echo "Outro song file: ${outrosong}"
+echo "Outro song title: ${outrosongtitle}"
+echo "Outro song artist: ${outrosongartist}"
+
+
 
 ffmpeg \
 -i "./processor_assets/Intro - VHS Test Pattern (small).mov" \
@@ -53,7 +60,10 @@ ffmpeg \
       drawtext=fontfile=./processor_assets/FiraCode-Regular.ttf:text='Noisebridge by going to':fontcolor=#FFFFFF:fontsize=50:box=1:boxcolor=#00000088:x=25:y=205 ,
       drawtext=fontfile=./processor_assets/FiraCode-Bold.ttf:text='patreon.com/noisebridge':fontcolor=#FFFFFF:fontsize=75:box=1:boxcolor=#00000088:x=25:y=265 ,
       drawtext=fontfile=./processor_assets/FiraCode-Regular.ttf:text='and signing up for a':fontcolor=#FFFFFF:fontsize=50:box=1:boxcolor=#00000088:x=25:y=355 ,
-      drawtext=fontfile=./processor_assets/FiraCode-Regular.ttf:text='monthly donation!':fontcolor=#FFFFFF:fontsize=50:box=1:boxcolor=#00000088:x=25:y=415
+      drawtext=fontfile=./processor_assets/FiraCode-Regular.ttf:text='monthly donation!':fontcolor=#FFFFFF:fontsize=50:box=1:boxcolor=#00000088:x=25:y=415 ,
+      drawtext=fontfile=./processor_assets/FiraCode-Regular.ttf:text='Song Credit':fontcolor=#FFFFFF:fontsize=20:box=1:boxcolor=#00000088:x=25:y=590,
+      drawtext=fontfile=./processor_assets/FiraCode-Regular.ttf:textfile=${outrosongtitle}:fontcolor=#FFFFFF:fontsize=30:box=1:boxcolor=#00000088:x=25:y=620,
+      drawtext=fontfile=./processor_assets/FiraCode-Regular.ttf:textfile=${outrosongartist}:fontcolor=#FFFFFF:fontsize=30:box=1:boxcolor=#00000088:x=25:y=650
       [outrov] ;
 
 [6] anull [outroblurba] ;
