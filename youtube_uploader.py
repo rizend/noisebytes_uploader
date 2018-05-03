@@ -125,8 +125,7 @@ def approve_video(video_id):
                 resourceId=dict(
                     kind='youtube#video',
                     videoId=video_id
-                ),
-                position=0
+                )
             )
         )
         youtube.playlistItems().insert(body=playlist_properties, part='snippet').execute()
