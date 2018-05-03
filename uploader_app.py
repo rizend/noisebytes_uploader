@@ -29,7 +29,7 @@ def log_to_slack(msg):
     return requests.post(SLACK_WEBHOOK_URL, json=payload)
 
 @app.route("/slack/approve", methods=['POST'])
-def slack_command_handler():
+def approve_command_handler():
     if request.form['token'] != APPROVE_SLACK_TOKEN:
         return ':('
     video_id = request.form['text']
@@ -43,7 +43,7 @@ def slack_command_handler():
     return "Unknown return value, please contact @beka and/or @rizend"
 
 @app.route("/slack/trash", methods=['POST'])
-def slack_command_handler():
+def trash_command_handler():
     if request.form['token'] != TRASH_SLACK_TOKEN:
         return ':('
     video_id = request.form['text']
