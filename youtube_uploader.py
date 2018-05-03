@@ -133,3 +133,28 @@ def approve_video(video_id):
         return "Approved"
     
     return "AlreadyApproved"
+
+def trash_video(video_id):
+    youtube = get_authenticated_service()
+
+    handle = open('./uploads/queue.txt', 'r')
+    queue = handle.read()
+    handle.close()
+
+    needle = re.compile('^'+video_id+'$', re.M).search(queue)
+
+    if needle:
+        # video is in queue, update it and remove
+        handle = open('./uploads/queue.txt', 'w')
+        handle.write(queue[0:needle.start()] + queue[needle.end()+1:-1])
+        handle.close()
+
+        properties = dict(
+            id=video_id,
+            status=dict(privacyStatus='public')
+        )
+        youtube.videos().delete(id = video_id).execute()
+
+        return "Trashed"
+
+    return "AlreadyTrashed"

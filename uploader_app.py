@@ -3,7 +3,7 @@ import os
 import binascii
 from subprocess import call
 import threading
-from secrets import SLACK_TOKEN, SLACK_WEBHOOK_URL
+from secrets import APPROVE_SLACK_TOKEN, TRASH_SLACK_TOKEN, SLACK_WEBHOOK_URL
 from flask import Flask, request, redirect, flash, render_template
 import requests
 import youtube_uploader
@@ -28,9 +28,9 @@ def log_to_slack(msg):
     }
     return requests.post(SLACK_WEBHOOK_URL, json=payload)
 
-@app.route("/slack", methods=['POST'])
+@app.route("/slack/approve", methods=['POST'])
 def slack_command_handler():
-    if request.form['token'] != SLACK_TOKEN:
+    if request.form['token'] != APPROVE_SLACK_TOKEN:
         return ':('
     video_id = request.form['text']
     user = request.form['user_name']
@@ -40,6 +40,20 @@ def slack_command_handler():
         return "Video successfully approved"
     if ret == "AlreadyApproved":
         return "That video has already been approved :)"
+    return "Unknown return value, please contact @beka and/or @rizend"
+
+@app.route("/slack/trash", methods=['POST'])
+def slack_command_handler():
+    if request.form['token'] != TRASH_SLACK_TOKEN:
+        return ':('
+    video_id = request.form['text']
+    user = request.form['user_name']
+    ret = youtube_uploader.trash_video(video_id)
+    if ret == "Trashed":
+        log_to_slack(user + ' trashed video ' + youtube_video_url(video_id))
+        return "Video successfully trashed"
+    if ret == "AlreadyTrashed":
+        return "That video has already been trashed :)"
     return "Unknown return value, please contact @beka and/or @rizend"
 
 def title_of_processed_video(title, author):
@@ -90,7 +104,9 @@ def upload_file_handler():
                 video_id = youtube_uploader.upload_video(title_of_processed_video(title, author),
                                                          processed_file)
                 if video_id:
-                    log_to_slack("Video " + youtube_video_url(video_id) + " ready for moderation")
+                    log_to_slack("Video " + youtube_video_url(video_id) + " ready for moderation. " +
+                                 "You can approve it by typing `/approve_noisebyte " + video_id + "`, or trash it "+
+                                 "by typing `/trash_noisebyte " + video_id + "`")
                 else:
                     log_to_slack("An error was encountered while uploading a video")
                 os.remove(upload_file)
