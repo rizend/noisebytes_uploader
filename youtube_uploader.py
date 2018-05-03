@@ -121,7 +121,7 @@ def approve_video(video_id):
 
         playlist_properties = dict(
             snippet=dict(
-                playlistId='NOISEBYTES_PLAYLIST_ID',
+                playlistId=NOISEBYTES_PLAYLIST_ID,
                 resourceId=dict(
                     kind='youtube#video',
                     videoId=video_id
