@@ -61,9 +61,9 @@ ffmpeg \
       drawtext=fontfile=./processor_assets/FiraCode-Bold.ttf:text='patreon.com/noisebridge':fontcolor=#FFFFFF:fontsize=75:box=1:boxcolor=#00000088:x=25:y=265 ,
       drawtext=fontfile=./processor_assets/FiraCode-Regular.ttf:text='and signing up for a':fontcolor=#FFFFFF:fontsize=50:box=1:boxcolor=#00000088:x=25:y=355 ,
       drawtext=fontfile=./processor_assets/FiraCode-Regular.ttf:text='monthly donation!':fontcolor=#FFFFFF:fontsize=50:box=1:boxcolor=#00000088:x=25:y=415 ,
-      drawtext=fontfile=./processor_assets/FiraCode-Regular.ttf:text='Song Credit':fontcolor=#FFFFFF:fontsize=20:box=1:boxcolor=#00000088:x=25:y=590,
-      drawtext=fontfile=./processor_assets/FiraCode-Regular.ttf:textfile=${outrosongtitle}:fontcolor=#FFFFFF:fontsize=30:box=1:boxcolor=#00000088:x=25:y=620,
-      drawtext=fontfile=./processor_assets/FiraCode-Regular.ttf:textfile=${outrosongartist}:fontcolor=#FFFFFF:fontsize=30:box=1:boxcolor=#00000088:x=25:y=655
+      drawtext=fontfile=./processor_assets/FiraCode-Regular.ttf:text='Song Credit':fontcolor=#FFFFFF:fontsize=20:box=1:boxcolor=#00000088:x=25:y=595,
+      drawtext=fontfile=./processor_assets/FiraCode-Regular.ttf:textfile=${outrosongtitle}:fontcolor=#FFFFFF:fontsize=30:box=1:boxcolor=#00000088:x=25:y=625,
+      drawtext=fontfile=./processor_assets/FiraCode-Regular.ttf:textfile=${outrosongartist}:fontcolor=#FFFFFF:fontsize=30:box=1:boxcolor=#00000088:x=25:y=660
       [outrov] ;
 
 [6] anull [outroblurba] ;
