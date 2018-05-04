@@ -1,4 +1,4 @@
-label, h1, input[type=file], ul, li {
+label, h1, input[type=file], ul, li, #description {
   color: #fff;
   background-color: rgba(0,0,0,0.53);
   padding: 5px;
@@ -12,6 +12,7 @@ html {
 }
 body {
   background-image: url('test_pattern_colors.svg');
+  background-size: cover;
   margin: 0;
 }
 * {
@@ -32,4 +33,7 @@ input[type=file] {
 }
 input[type=submit] {
   margin-bottom: 30px;
+}
+#description {
+  font-size: 14pt;
 }
