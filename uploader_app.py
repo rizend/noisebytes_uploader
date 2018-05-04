@@ -16,6 +16,8 @@ BASE_ADDR='/noisebytes/'
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
+app.url_map.strict_slashes = False
+
 def youtube_video_url(id):
   return 'https://www.youtube.com/watch?v=' + id
 
