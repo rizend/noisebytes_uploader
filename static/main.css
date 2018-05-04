@@ -1,0 +1,35 @@
+label, h1, input[type=file], ul, li {
+  color: #fff;
+  background-color: rgba(0,0,0,0.53);
+  padding: 5px;
+}
+h1 {
+  margin: 0;
+}
+html {
+  margin:0;
+  width:100%;
+}
+body {
+  background-image: url('test_pattern_colors.svg');
+  margin: 0;
+}
+* {
+  font-family: monospace;
+}
+#submit_spacer {
+  text-align: center;
+}
+input, p, h1, li {
+  font-size: 36pt;
+  text-align:center;
+}
+ul {
+  background-color: rgba(255,0,0,0.53);
+}
+input[type=file] {
+  font-size: 24pt;
+}
+input[type=submit] {
+  margin-bottom: 30px;
+}
