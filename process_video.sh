@@ -34,13 +34,13 @@ ffmpeg \
 -i "${outrosong}" \
 -i "./processor_assets/Outro Static.mov" \
 -filter_complex "
-[0:v] scale=1280:720,setsar=1:1 [introv] ;
+[0:v] scale=1280:720,setsar=1/1 [introv] ;
 [0:a] anull [introa] ;
 
-[1:v] scale=1280:720,setsar=1:1 [introstaticv] ;
+[1:v] scale=1280:720,setsar=1/1 [introstaticv] ;
 [1:a] anull [introstatica] ;
 
-[2:v] scale=1280:720,setsar=1:1 [contentv] ;
+[2:v] scale=1280:720,setsar=1/1 [contentv] ;
 [2:a] anull [maina] ;
 
 [3] scale=1280:720 ,
@@ -50,7 +50,7 @@ ffmpeg \
     fade=out:180:30
     [lower] ;
 
-[4:v] scale=1280:720,setsar=1:1 [outrostaticv] ;
+[4:v] scale=1280:720,setsar=1/1 [outrostaticv] ;
 [4:a] anull [outrostatica] ;
 
 [5:v] scale=1280:720 ,
@@ -72,7 +72,7 @@ ffmpeg \
 
 [outroblurba][outrosonga] amerge [outroa] ;
 
-[8:v] scale=1280:720,setsar=1:1 [outrostatic2v] ;
+[8:v] scale=1280:720,setsar=1/1 [outrostatic2v] ;
 [8:a] anull [outrostatic2a] ;
 
 
