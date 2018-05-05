@@ -80,4 +80,4 @@ ffmpeg \
 [contentv][lower] overlay=format=rgb:eof_action=pass [mainv] ;
 [introv][introstaticv][mainv][outrostaticv][outrov][outrostatic2v] concat=n=6:v=1:a=0 [outv] ;
 [introa][introstatica][maina][outrostatica][outroa][outrostatic2a] concat=n=6:v=0:a=1 [outa]" \
--map "[outv]" -map "[outa]" "${newfile}"
+-map "[outv]" -map "[outa]" -max_muxing_queue_size 1024 "${newfile}"
