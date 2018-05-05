@@ -26,7 +26,7 @@ ext=${file##${filename}}
 temp="${filename}.temp${ext}"
 
 mv "${file}" "${temp}"
-ffmpeg -i "${temp}" -max_muxing_queue_size 1024 "${file}"
+ffmpeg -i "${temp}" -max_muxing_queue_size 1024 -profile:v baseline -level 3.1 -vsync 0 "${file}"
 
 ffmpeg \
 -i "./processor_assets/Intro - VHS Test Pattern (small).mov" \
