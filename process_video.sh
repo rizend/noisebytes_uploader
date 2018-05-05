@@ -21,7 +21,8 @@ echo "Outro song file: ${outrosong}"
 echo "Outro song title: ${outrosongtitle}"
 echo "Outro song artist: ${outrosongartist}"
 
-
+mv "${$file}" "temp_${file}"
+ffmpeg -i "temp_${file}" -max_muxing_queue_size 1024 "${file}"
 
 ffmpeg \
 -i "./processor_assets/Intro - VHS Test Pattern (small).mov" \
