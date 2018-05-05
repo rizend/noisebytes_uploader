@@ -29,18 +29,8 @@ ul {
   background-color: rgba(255,0,0,0.53);
 }
 input[type=file] {
-  position: absolute;
-  	top: 0;
-  	right: 0;
-  	margin: 0;
-  	padding: 0;
-  	font-size: 20px;
-  	cursor: pointer;
-  	opacity: 0;
-  	filter: alpha(opacity=0);
-  	height: 100%;
-  	text-align: center;
-  }
+  font-size: 24pt;
+}
 input[type=submit] {
   margin-bottom: 30px;
 }
