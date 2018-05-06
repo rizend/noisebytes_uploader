@@ -23,16 +23,14 @@ echo "Outro song artist: ${outrosongartist}"
 
 filename=${file%.*}
 ext=${file##${filename}}
-temp="${filename}.temp${ext}"
-newfilename="${filename}.mp4"
+reencodedfile="${filename}.mp4"
 
-mv "${file}" "${temp}"
-ffmpeg -i "${temp}" -max_muxing_queue_size 1024 -profile:v baseline -level 3.1 -vsync 0 "${newfilename}"
+ffmpeg -i "${file}" -max_muxing_queue_size 1024 -profile:v baseline -level 3.1 -vsync 0 "${reencodedfile}"
 
 ffmpeg \
 -i "./processor_assets/Intro - VHS Test Pattern (small).mov" \
 -i "./processor_assets/Inter Static.mov" \
--i "${newfilename}" \
+-i "${reencodedfile}" \
 -loop 1 -i "./processor_assets/Lower Third.png" \
 -i "./processor_assets/Inter Static.mov" \
 -i "${outrovideo}" \
@@ -87,3 +85,5 @@ ffmpeg \
 [introv][introstaticv][mainv][outrostaticv][outrov][outrostatic2v] concat=n=6:v=1:a=0 [outv] ;
 [introa][introstatica][maina][outrostatica][outroa][outrostatic2a] concat=n=6:v=0:a=1 [outa]" \
 -map "[outv]" -map "[outa]" -max_muxing_queue_size 1024 "${newfile}"
+
+rm "${reencodedfile}"
