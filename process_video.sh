@@ -24,14 +24,15 @@ echo "Outro song artist: ${outrosongartist}"
 filename=${file%.*}
 ext=${file##${filename}}
 temp="${filename}.temp${ext}"
+newfilename="${filename}.mp4"
 
 mv "${file}" "${temp}"
-ffmpeg -i "${temp}" -max_muxing_queue_size 1024 -profile:v baseline -level 3.1 -vsync 0 "${filename}.mp4"
+ffmpeg -i "${temp}" -max_muxing_queue_size 1024 -profile:v baseline -level 3.1 -vsync 0 "${newfilename}"
 
 ffmpeg \
 -i "./processor_assets/Intro - VHS Test Pattern (small).mov" \
 -i "./processor_assets/Inter Static.mov" \
--i "${file}" \
+-i "${newfilename}" \
 -loop 1 -i "./processor_assets/Lower Third.png" \
 -i "./processor_assets/Inter Static.mov" \
 -i "${outrovideo}" \
