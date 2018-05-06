@@ -4,7 +4,7 @@ title=$1
 author=$2
 input=$3
 newfile=$4
-tempdir=$5
+tempdir="./temp"
 
 shopt -s nullglob
 
