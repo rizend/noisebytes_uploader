@@ -2,8 +2,9 @@
 
 title=$1
 author=$2
-file=$3
+input=$3
 newfile=$4
+tempdir=$5
 
 shopt -s nullglob
 
@@ -21,70 +22,94 @@ echo "Outro song file: ${outrosong}"
 echo "Outro song title: ${outrosongtitle}"
 echo "Outro song artist: ${outrosongartist}"
 
-filename=${file%.*}
-ext=${file##${filename}}
-reencodedfile="${filename}.mp4"
+filename=${input%.*}
+ext=${input##${filename}}
+inaudio="${tempdir}/${filename}.a.wav"
+invideo="${tempdir}/${filename}.v.mp4"
+inaudiocorrected="${tempdir}/${filename}.a.corrected.wav"
+invideocorrected="${tempdir}/${filename}.v.corrected.mp4"
+inputcorrected="${tempdir}/${filename}.corrected.mp4"
+outro="${tempdir}/${filename}.outro.mp4"
+main="${tempdir}/${filename}.main.mp4"
 
-cp "${file}" "${file}.debug"
-ffmpeg -i "${file}" -max_muxing_queue_size 1024 -profile:v baseline -level 3.1 -vsync 0 "${reencodedfile}"
+
+
+
 
 ffmpeg \
--i "./processor_assets/Intro - VHS Test Pattern (small).mov" \
--i "./processor_assets/Inter Static.mov" \
--i "${reencodedfile}" \
+-i "${input}" \
+-max_muxing_queue_size 1024 \
+-r 30 \
+-filter_complex "[0:a] anull [audio]" \
+-map "[audio]" "${inaudio}"
+
+adur=$(ffprobe -v error -show_entries format=duration -of default=noprint_wrappers=1:nokey=1 "${inaudio}")
+
+
+
+ffmpeg \
+-i "${input}" \
+-max_muxing_queue_size 1024 \
+-r 30 \
+-filter_complex "[0:v] null [video]" \
+-map "[video]" "${invideo}"
+
+vdur=$(ffprobe -v error -show_entries format=duration -of default=noprint_wrappers=1:nokey=1 "${invideo}")
+
+vratio=$(echo "${adur} / ${vdur}" | bc -l)
+
+
+
+ffmpeg \
+-i "./processor_assets/Intro.mp4" \
+-i "./processor_assets/Inter Static.mp4" \
+-i "${inaudio}" \
+-i "${invideo}" \
 -loop 1 -i "./processor_assets/Lower Third.png" \
--i "./processor_assets/Inter Static.mov" \
+-i "./processor_assets/Inter Static.mp4" \
 -i "${outrovideo}" \
--i "./processor_assets/Outro Blurb.mp3" \
+-i "./processor_assets/Outro Blurb.wav" \
 -i "${outrosong}" \
--i "./processor_assets/Outro Static.mov" \
+-i "./processor_assets/Outro Static.mp4" \
 -filter_complex "
-[0:v] scale=1280:720,setsar=1/1 [introv] ;
 [0:a] anull [introa] ;
+[0:v] null [introv] ;
 
-[1:v] scale=1280:720,setsar=1/1 [introstaticv] ;
 [1:a] anull [introstatica] ;
+[1:v] null [introstaticv] ;
 
-[2:v] scale=1280:720,setsar=1/1 [contentv] ;
-[2:a] anull [maina] ;
+[2] anull [maina] ;
 
-[3] scale=1280:720 ,
+[3:v] setpts=${vratio}*PTS [contentv] ;
+
+[4] scale=1280/720 ,
+    setsar=1/1,
     drawtext=fontfile=./processor_assets/FiraCode-Bold.ttf:text=${title}:fontcolor=#FFFFFF:fontsize=55:x=230:y=570 ,
     drawtext=fontfile=./processor_assets/FiraCode-Regular.ttf:text=${author}:fontcolor=#FFFFFF:fontsize=45:x=230:y=630 ,
     fade=in:0:30 ,
     fade=out:180:30
-    [lower] ;
+    [lowerthird] ;
 
-[4:v] scale=1280:720,setsar=1/1 [outrostaticv] ;
-[4:a] anull [outrostatica] ;
+[5:a] anull [interstatica] ;
+[5:v] null [interstaticv] ;
 
-[5:v] scale=1280:720 ,
-      drawtext=fontfile=./processor_assets/FiraCode-Regular.ttf:text='Thank you for watching!':fontcolor=#FFFFFF:fontsize=50:box=1:boxcolor=#00000088:x=25:y=25 ,
-      drawtext=fontfile=./processor_assets/FiraCode-Regular.ttf:text='If you liked this video':fontcolor=#FFFFFF:fontsize=50:box=1:boxcolor=#00000088:x=25:y=85 ,
-      drawtext=fontfile=./processor_assets/FiraCode-Regular.ttf:text='please consider supporting':fontcolor=#FFFFFF:fontsize=50:box=1:boxcolor=#00000088:x=25:y=145 ,
-      drawtext=fontfile=./processor_assets/FiraCode-Regular.ttf:text='Noisebridge by going to':fontcolor=#FFFFFF:fontsize=50:box=1:boxcolor=#00000088:x=25:y=205 ,
-      drawtext=fontfile=./processor_assets/FiraCode-Bold.ttf:text='patreon.com/noisebridge':fontcolor=#FFFFFF:fontsize=75:box=1:boxcolor=#00000088:x=25:y=265 ,
-      drawtext=fontfile=./processor_assets/FiraCode-Regular.ttf:text='and signing up for a':fontcolor=#FFFFFF:fontsize=50:box=1:boxcolor=#00000088:x=25:y=355 ,
-      drawtext=fontfile=./processor_assets/FiraCode-Regular.ttf:text='monthly donation!':fontcolor=#FFFFFF:fontsize=50:box=1:boxcolor=#00000088:x=25:y=415 ,
-      drawtext=fontfile=./processor_assets/FiraCode-Regular.ttf:text='Song Credit':fontcolor=#FFFFFF:fontsize=20:box=1:boxcolor=#00000088:x=25:y=600,
-      drawtext=fontfile=./processor_assets/FiraCode-Regular.ttf:textfile=${outrosongtitle}:fontcolor=#FFFFFF:fontsize=30:box=1:boxcolor=#00000088:x=25:y=630,
-      drawtext=fontfile=./processor_assets/FiraCode-Regular.ttf:textfile=${outrosongartist}:fontcolor=#FFFFFF:fontsize=30:box=1:boxcolor=#00000088:x=25:y=665
-      [outrov] ;
+[6:v] null [outrov] ;
 
-[6] anull [outroblurba] ;
+[7] anull [outroblurba] ;
 
-[7] anull [outrosonga] ;
+[8] anull [outrosonga] ;
+
+[9:a] anull [outrostatica] ;
+[9:v] null [outrostaticv] ;
 
 [outroblurba][outrosonga] amerge [outroa] ;
 
-[8:v] scale=1280:720,setsar=1/1 [outrostatic2v] ;
-[8:a] anull [outrostatic2a] ;
+[contentv][lowerthird] overlay=format=rgb:eof_action=pass [mainv] ;
+
+[introa][introstatica][maina][interstatica][outroa][outrostatica] concat=n=6:v=0:a=1 [outa] ;
+[introv][introstaticv][mainv][interstaticv][outrov][outrostaticv] concat=n=6:v=1:a=0 [outv]" \
+-map "[outv]" -map "[outa]" "${newfile}"
 
 
-
-[contentv][lower] overlay=format=rgb:eof_action=pass [mainv] ;
-[introv][introstaticv][mainv][outrostaticv][outrov][outrostatic2v] concat=n=6:v=1:a=0 [outv] ;
-[introa][introstatica][maina][outrostatica][outroa][outrostatic2a] concat=n=6:v=0:a=1 [outa]" \
--map "[outv]" -map "[outa]" -max_muxing_queue_size 1024 "${newfile}"
-
-rm "${reencodedfile}"
+rm "${inaudio}"
+rm "${invideo}"
