@@ -43,7 +43,7 @@ def get_authenticated_service():
 def initialize_upload(youtube, title, description, filename):
     body = dict(
         snippet=dict(title=title,description=description,categoryId=28),
-        status=dict(privacyStatus='unlisted',embeddable=true,license="creativeCommon")
+        status=dict(privacyStatus='unlisted',embeddable=True,license="creativeCommon")
     )
 
     insert_request = youtube.videos().insert(
