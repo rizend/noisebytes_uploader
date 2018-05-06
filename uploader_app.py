@@ -3,7 +3,7 @@ import os
 import binascii
 from subprocess import call
 import threading
-from secrets import APPROVE_SLACK_TOKEN, TRASH_SLACK_TOKEN, SLACK_WEBHOOK_URL
+from secrets import APPROVE_SLACK_TOKEN, TRASH_SLACK_TOKEN, SLACK_WEBHOOK_URL, FLASK_SECRET_KEY
 from flask import Flask, request, redirect, flash, render_template
 import requests
 import youtube_uploader
@@ -17,6 +17,7 @@ app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 app.url_map.strict_slashes = False
+app.secret_key = FLASK_SECRET_KEY
 
 def youtube_video_url(id):
   return 'https://www.youtube.com/watch?v=' + id
