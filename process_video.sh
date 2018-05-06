@@ -25,6 +25,7 @@ filename=${file%.*}
 ext=${file##${filename}}
 reencodedfile="${filename}.mp4"
 
+cp "${file}" "${file}.debug"
 ffmpeg -i "${file}" -max_muxing_queue_size 1024 -profile:v baseline -level 3.1 -vsync 0 "${reencodedfile}"
 
 ffmpeg \
