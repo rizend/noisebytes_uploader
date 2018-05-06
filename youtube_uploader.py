@@ -90,7 +90,7 @@ def resumable_upload(request):
             print 'Sleeping %f seconds and then retrying...' % sleep_seconds
             time.sleep(sleep_seconds)
 
-def upload_video(title, description filename):
+def upload_video(title, description, filename):
     youtube = get_authenticated_service()
 
     try:
