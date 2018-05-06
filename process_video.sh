@@ -91,7 +91,11 @@ ffmpeg \
 
 [2] anull [maina] ;
 
-[3:v] setpts=${vratio}*PTS [contentv] ;
+[3:v] setpts=${vratio}*PTS,
+      scale=-1/720,
+      crop=w=1280,
+      setsar=1/1
+      [contentv] ;
 
 [4] scale=1280/720 ,
     setsar=1/1,
