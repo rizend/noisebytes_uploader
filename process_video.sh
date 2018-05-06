@@ -4,33 +4,26 @@ title=$1
 author=$2
 input=$3
 newfile=$4
-tempdir="./temp"
 
-shopt -s nullglob
 
-# select an outro video
-outrovideos=(./processor_assets/Outro\ Videos/*)
-outrovideo=${outrovideos[$[$RANDOM % ${#outrovideos[@]}]]}
-echo Outro Video: $outrovideo
 
-outrosongs=(./processor_assets/Outro\ Songs/*)
-outrosongdir=${outrosongs[$[$RANDOM % ${#outrosongs[@]}]]}
-outrosong="${outrosongdir}/song.wav"
-outrosongtitle="${outrosongdir}/title.txt"
-outrosongartist="${outrosongdir}/artist.txt"
-echo "Outro song file: ${outrosong}"
-echo "Outro song title: ${outrosongtitle}"
-echo "Outro song artist: ${outrosongartist}"
 
-filename=${input%.*}
-ext=${input##${filename}}
+tempdir="./temp/"
+
+fullfilename=$(echo ${input} | sed -E 's/^.*\/(.*)$/\1/')
+filename=$(echo ${fullfilename} | sed -E 's/^(.*)\.[^.]*$/\1/')
+ext=$(echo ${fullfilename} | sed -E 's/^.*\.([^.]*)$/\1/')
+
+echo $filename
+echo $ext
+
 inaudio="${tempdir}/${filename}.a.wav"
 invideo="${tempdir}/${filename}.v.mp4"
-inaudiocorrected="${tempdir}/${filename}.a.corrected.wav"
-invideocorrected="${tempdir}/${filename}.v.corrected.mp4"
-inputcorrected="${tempdir}/${filename}.corrected.mp4"
-outro="${tempdir}/${filename}.outro.mp4"
-main="${tempdir}/${filename}.main.mp4"
+
+
+
+
+
 
 
 
@@ -57,6 +50,24 @@ ffmpeg \
 vdur=$(ffprobe -v error -show_entries format=duration -of default=noprint_wrappers=1:nokey=1 "${invideo}")
 
 vratio=$(echo "${adur} / ${vdur}" | bc -l)
+
+
+
+shopt -s nullglob
+
+# select an outro video
+outrovideos=(./processor_assets/Outro\ Videos/*)
+outrovideo=${outrovideos[$[$RANDOM % ${#outrovideos[@]}]]}
+echo Outro Video: $outrovideo
+
+outrosongs=(./processor_assets/Outro\ Songs/*)
+outrosongdir=${outrosongs[$[$RANDOM % ${#outrosongs[@]}]]}
+outrosong="${outrosongdir}/song.wav"
+outrosongtitle="${outrosongdir}/title.txt"
+outrosongartist="${outrosongdir}/artist.txt"
+echo "Outro song file: ${outrosong}"
+echo "Outro song title: ${outrosongtitle}"
+echo "Outro song artist: ${outrosongartist}"
 
 
 
