@@ -40,9 +40,9 @@ def get_authenticated_service():
     credentials = load_credentials()
     return build(API_SERVICE_NAME, API_VERSION, credentials=credentials)
 
-def initialize_upload(youtube, title, filename):
+def initialize_upload(youtube, title, description, filename):
     body = dict(
-        snippet=dict(title=title),
+        snippet=dict(title=title,description=description,categoryId=28),
         status=dict(privacyStatus='unlisted')
     )
 
@@ -90,11 +90,11 @@ def resumable_upload(request):
             print 'Sleeping %f seconds and then retrying...' % sleep_seconds
             time.sleep(sleep_seconds)
 
-def upload_video(title, filename):
+def upload_video(title, description filename):
     youtube = get_authenticated_service()
 
     try:
-        return initialize_upload(youtube, title, filename)
+        return initialize_upload(youtube, title, description, filename)
     except HttpError, err:
         print 'An HTTP error %d occurred:\n%s' % (err.resp.status, err.content)
 

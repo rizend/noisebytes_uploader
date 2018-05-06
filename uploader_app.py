@@ -62,6 +62,16 @@ def trash_command_handler():
 def title_of_processed_video(title, author):
     return "Noisebytes - " + title + " by " + author
 
+def description_of_video(title, author):
+    return "Title: " + title + "\n" +
+           "Author: " + author + "\n" +
+           "Patreon: https://patreon.com/noisebridge\n" +
+           "Website: https://noisebridge.net/\n\n" +
+           "Noisebridge is a 501(c)3 non-profit hackerspace in San Francisco's Mission District, located at 2169 Mission St.\n\n"+
+           "We're open to the public every day from 11am to 10pm, so feel free to drop by!\n\n" +
+           "We're also funded entirely by the community, so please donate if you like what we do, or the content we produce.\n\n" +
+           "Noisebridge is a safe space. You can read about what that means to us at the pages listed here: https://www.noisebridge.net/wiki/Safe_Space"""
+
 def random_name():
     return binascii.b2a_hex(os.urandom(16))
 
@@ -105,6 +115,7 @@ def upload_file_handler():
                       upload_file,
                       processed_file])
                 video_id = youtube_uploader.upload_video(title_of_processed_video(title, author),
+                                                         description_of_video(title, author),
                                                          processed_file)
                 if video_id:
                     log_to_slack("Video " + youtube_video_url(video_id) + " ready for moderation. " +
