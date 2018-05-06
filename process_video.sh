@@ -104,7 +104,18 @@ ffmpeg \
 [5:a] anull [interstatica] ;
 [5:v] null [interstaticv] ;
 
-[6:v] null [outrov] ;
+[6:v] scale=1280/720 ,
+      drawtext=fontfile=./processor_assets/FiraCode-Regular.ttf:text='Thank you for watching!':fontcolor=#FFFFFF:fontsize=50:box=1:boxcolor=#00000088:x=25:y=25 ,
+      drawtext=fontfile=./processor_assets/FiraCode-Regular.ttf:text='If you liked this video':fontcolor=#FFFFFF:fontsize=50:box=1:boxcolor=#00000088:x=25:y=85 ,
+      drawtext=fontfile=./processor_assets/FiraCode-Regular.ttf:text='please consider supporting':fontcolor=#FFFFFF:fontsize=50:box=1:boxcolor=#00000088:x=25:y=145 ,
+      drawtext=fontfile=./processor_assets/FiraCode-Regular.ttf:text='Noisebridge by going to':fontcolor=#FFFFFF:fontsize=50:box=1:boxcolor=#00000088:x=25:y=205 ,
+      drawtext=fontfile=./processor_assets/FiraCode-Bold.ttf:text='patreon.com/noisebridge':fontcolor=#FFFFFF:fontsize=75:box=1:boxcolor=#00000088:x=25:y=265 ,
+      drawtext=fontfile=./processor_assets/FiraCode-Regular.ttf:text='and signing up for a':fontcolor=#FFFFFF:fontsize=50:box=1:boxcolor=#00000088:x=25:y=355 ,
+      drawtext=fontfile=./processor_assets/FiraCode-Regular.ttf:text='monthly donation!':fontcolor=#FFFFFF:fontsize=50:box=1:boxcolor=#00000088:x=25:y=415 ,
+      drawtext=fontfile=./processor_assets/FiraCode-Regular.ttf:text='Song Credit':fontcolor=#FFFFFF:fontsize=20:box=1:boxcolor=#00000088:x=25:y=600,
+      drawtext=fontfile=./processor_assets/FiraCode-Regular.ttf:textfile=${outrosongtitle}:fontcolor=#FFFFFF:fontsize=30:box=1:boxcolor=#00000088:x=25:y=630,
+      drawtext=fontfile=./processor_assets/FiraCode-Regular.ttf:textfile=${outrosongartist}:fontcolor=#FFFFFF:fontsize=30:box=1:boxcolor=#00000088:x=25:y=665
+      [outrov] ;
 
 [7] anull [outroblurba] ;
 
