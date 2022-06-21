@@ -37,7 +37,7 @@ MarkupSafe==1.0
 mercurial==4.0
 mock==2.0.0
 noisedoor==0.1
-numpy==1.12.1
+numpy==1.22.0
 oauth2client==4.1.2
 oauthlib==2.0.7
 pathlib2==2.1.0
